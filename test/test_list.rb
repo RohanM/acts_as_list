@@ -486,3 +486,13 @@ class NoAdditionTest < ActsAsListTestCase
     super
   end
 end
+
+
+class ScatteredPositions < ActsAsListTestCase
+  include Shared::ScatteredPositions
+
+  def setup
+    setup_db
+    super
+  end
+end

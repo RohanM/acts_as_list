@@ -118,11 +118,13 @@ module ActiveRecord
 
         # Swap positions with the next lower item, if one exists.
         def move_lower
+
           return unless lower_item
 
           acts_as_list_class.transaction do
-            lower_item.decrement_position
-            increment_position
+            #lower_item.decrement_position
+            #increment_position
+            swap_positions(self, lower_item)
           end
         end
 
@@ -131,9 +133,17 @@ module ActiveRecord
           return unless higher_item
 
           acts_as_list_class.transaction do
-            higher_item.increment_position
-            decrement_position
+            #higher_item.increment_position
+            #decrement_position
+            swap_positions(self, higher_item)
           end
+        end
+
+        def swap_positions(current_item, item_to_swap)
+          current_position = self.send(position_column)
+          swapped_position = item_to_swap.send(position_column)
+          set_list_position(swapped_position)
+          item_to_swap.set_list_position(current_position)
         end
 
         # Move to the bottom of the list. If the item is already in the list, the items below it have their
